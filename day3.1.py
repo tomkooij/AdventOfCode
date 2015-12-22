@@ -1,8 +1,6 @@
 # adventofcode.com
 # day 3.1
 
-import itertools
-
 INPUTFILE = 'input/input3'
 
 TESTCASE1 = '>'
