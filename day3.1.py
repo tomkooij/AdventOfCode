@@ -7,14 +7,12 @@ TESTCASE1 = '>'
 TESTCASE2 = '^>v<'
 TESTCASE3 = '^v^v^v^v^v'
 
-total = 0
-
 UP = '^'
 DOWN = 'v'
 LEFT = '<'
 RIGHT = '>'
 
-x,y = 0,0
+x, y = 0, 0
 trip = []  # list of locations
 
 with open(INPUTFILE) as f:
@@ -22,7 +20,7 @@ with open(INPUTFILE) as f:
     #inputstr = TESTCASE2
 
     # start position
-    trip.append((x,y))
+    trip.append((x, y))
 
     for char in inputstr:
 
@@ -37,7 +35,7 @@ with open(INPUTFILE) as f:
         else:
             print "skipping unkown input: ", char
 
-        trip.append((x,y))
+        trip.append((x, y))
 
     # remove duplicates
     trip = set(trip)
