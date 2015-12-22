@@ -9,7 +9,8 @@ INPUTFILE = 'input/input9'
 TESTCASE = ['London to Dublin = 464','London to Belfast = 518','Dublin to Belfast = 141']
 
 def distance(graph, route):
-    nextstep = graph[route[0]][route[1]]
+    """recusive computation of distance in graph via route"""
+    nextstep = graph[route[0]][route[1]]  # distance between first and second city
 
     if len(route) > 2:
         return nextstep + distance(graph, route[1:])
@@ -19,7 +20,7 @@ def distance(graph, route):
 with open(INPUTFILE) as f:
     lines = f.readlines()
 
-    graph = defaultdict(dict)
+    graph = defaultdict(dict)  # graph of distances between cities (nodes)
     nodes = []
 
     for line in lines:
@@ -32,15 +33,14 @@ with open(INPUTFILE) as f:
         nodes.append(s[0])
         nodes.append(s[2])
 
-routes = list(set(nodes))
+nodes = list(set(nodes))
 
 solution = []
 
-for route in permutations(routes):
+for route in permutations(nodes):
     d = distance(graph, route)
     #print route, d
     solution.append(d)
+
 print "min = ", min(solution)
 print "max = ", max(solution)
-
-#print graph
