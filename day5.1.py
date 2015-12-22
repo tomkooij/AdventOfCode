@@ -15,22 +15,18 @@ def is_nice(string):
     number_of_vowels = 0
     for v in VOWELS:
         number_of_vowels += string.count(v)
-    if number_of_vowels < 3:
-        return False
 
     doubles = False
 
     for i in range(len(string)-1):
         if string[i]==string[i+1]:
             doubles = True
-    if not doubles:
-        return False
 
     for illegal in FORBIDDEN:
         if string.find(illegal) != -1:
             return False
 
-    return True
+    return number_of_vowels >= 3 and doubles
 
 
 for testcase in TESTCASES:
