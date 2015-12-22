@@ -20,7 +20,7 @@ with open(INPUTFILE) as f:
 
         total += area
 
-        print l,w,h, area, total
+        #print l,w,h, area, total
 
 
-print "Santa needs %d sqaure feet of wrapping paper." % total
+print "Santa needs %d square feet of wrapping paper." % total
