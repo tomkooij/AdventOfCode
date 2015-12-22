@@ -8,40 +8,22 @@ INPUTFILE = 'input/input5'
 TESTCASES = ['aaaa', 'qjhvhtzxzqqjkmpb', 'xxyxx', 'uurcxstgmygtbstg', 'ieodomkazucvgmuy', 'dvszwmarrgswjxmb']
 
 
-def int2char(i):
-    return string.lowercase[i % 26] * (i/26+1)
-
-
-# ['aa', 'ab', .. , 'zz']
-doubles = []
-for i in range(26):
-    for j in range(26):
-        doubles.append(int2char(i)+int2char(j))
-
-
 def is_nice(string):
 
-    found = False
-    for d in doubles:
-        first = string.find(d)
-        if first != -1:
-            second = string.find(d, first+2)
-            if second > first+1:
-                found = True
+    found_doubles = False
+    for idx in range(len(string)-2):
+        s = string[idx:idx+2]
+        second = string.find(s, idx+2)
+        if second > idx+1:
+            found_doubles = True
 
-    if found is False:
-        return False
-
-    found = False
+    found_singles = False
     for idx, s in enumerate(string):
         second = string.find(s, idx+2)
         if second == idx+2:
-            found = True
+            found_singles = True
 
-    if found is False:
-        return False
-
-    return True
+    return found_doubles and found_singles
 
 
 for testcase in TESTCASES:
