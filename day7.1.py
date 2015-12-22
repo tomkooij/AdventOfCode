@@ -8,11 +8,6 @@
 INPUTFILE = 'input/input7'
 #INPUTFILE = 'input/test7'
 
-
-SIZE = 1000
-
-lights = SIZE*SIZE*[0]
-
 def AND(a, b): return a & b
 def OR(a, b): return a | b
 def RSHIFT(a, b): return a >> b
