@@ -2,6 +2,7 @@
 # day 13
 
 from collections import defaultdict
+from itertools import permutations
 
 INPUTFILE = 'input/input13'
 TESTINPUTFILE = 'input/test13'
@@ -47,3 +48,10 @@ if __name__ == '__main__':
     score = happiness(TESTCASE, testpotential)
     print names, score
     assert score == 330, 'testcase fails!'
+
+    names, potential = parse(INPUTFILE)
+    print names
+    solution = []
+    for seating in permutations(names):
+        solution.append(happiness(seating, potential))
+    print max(solution)
