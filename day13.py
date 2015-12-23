@@ -49,7 +49,20 @@ if __name__ == '__main__':
     print names, score
     assert score == 330, 'testcase fails!'
 
+    # part A
     names, potential = parse(INPUTFILE)
+    print names
+    solution = []
+    for seating in permutations(names):
+        solution.append(happiness(seating, potential))
+    print max(solution)
+
+    # part B
+    for name in names:
+        potential[name]['Tom'] = 0
+        potential['Tom'][name] = 0
+
+    names.append('Tom')
     print names
     solution = []
     for seating in permutations(names):
