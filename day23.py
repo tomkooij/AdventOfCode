@@ -8,10 +8,10 @@ def evaluate(instruction, regs):
     opcode, register, offset = instruction
 
     if opcode == 'hlf':
-        regs[register] = regs[register]/2
+        regs[register] /= 2
         regs['ip'] += 1
     elif opcode == 'tpl':
-        regs[register] = regs[register]*3
+        regs[register] *= 3
         regs['ip'] += 1
     elif opcode == 'inc':
         regs[register] += 1
@@ -30,7 +30,9 @@ def evaluate(instruction, regs):
             regs['ip'] += 1
     else:
         assert False, 'unknown instruction.'
+
     return regs
+
 
 def parse(infile):
     with open(infile) as f:
@@ -57,12 +59,8 @@ if __name__ == '__main__':
     instructions = parse(INPUTFILE)
     regs = {}
     regs['ip'] = 0
-    regs['a'] = 1
+    regs['a'] = 0
     regs['b'] = 0
-    while 1:
-        print 'ip: %d a: %d b: %d' % (regs['ip'], regs['a'], regs['b'])
+    while regs['ip'] < len(instructions):
         regs = evaluate(instructions[regs['ip']], regs)
-        if regs['ip'] >= len(instructions):
-            print 'execution stopped'
-            print 'ip: %d a: %d b: %d' % (regs['ip'], regs['a'], regs['b'])
-            break
+    print 'ip: %d a: %d b: %d' % (regs['ip'], regs['a'], regs['b'])
