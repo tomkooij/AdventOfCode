@@ -1,8 +1,6 @@
 # adventofcode
 # day11
 
-from itertools import groupby
-
 INPUT = 'vzbxkghb'
 #TESTCASE = 'abcdefgh'
 TESTCASES = ['xyzaabb','aaaa', 'aacbb', 'acaabcaabb','acaabcaa', 'hijklmmn', 'abbceffg']
