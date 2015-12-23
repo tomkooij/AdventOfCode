@@ -44,9 +44,8 @@ def parse(infile):
 
 if __name__ == '__main__':
     names, testpotential = parse(TESTINPUTFILE)
-    names = TESTCASE
     score = happiness(TESTCASE, testpotential)
-    print names, score
+    print TESTCASE, score
     assert score == 330, 'testcase fails!'
 
     # part A
@@ -61,8 +60,8 @@ if __name__ == '__main__':
     for name in names:
         potential[name]['Tom'] = 0
         potential['Tom'][name] = 0
-
     names.append('Tom')
+
     print names
     solution = []
     for seating in permutations(names):
