@@ -40,7 +40,7 @@ def parse(infile):
 
         instructions = []
 
-        for idx, line in enumerate(lines):
+        for line in lines:
             opcode = register = offset = None
             if ',' in line:
                 first, offset = line.split(', ')
