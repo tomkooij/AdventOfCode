@@ -9,9 +9,7 @@ TESTCASE = ['Comet can fly 14 km/s for 10 seconds, but then must rest for 127 se
 #RUNTIME = 1000
 
 def parse(lines):
-
     reindeer = []
-
     for line in lines:
         beast = {}
         name, can, fly, speed, km, f, flytime, seconds, but, t, m, r, f, resttime, sec = line.split()
@@ -25,7 +23,11 @@ def parse(lines):
     return reindeer
 
 
-def is_resting(time, flytime, resttime):
+def is_resting(time, beast):
+
+    flytime = beast['flytime']
+    resttime = beast['resttime']
+
     timeleft = time % (flytime+resttime)
     if flytime <= timeleft:
         return True
@@ -42,7 +44,7 @@ if __name__ == '__main__':
 
     for time in range(0,RUNTIME+1):
         for beast in reindeer:
-            if not is_resting(time, beast['flytime'], beast['resttime']):
+            if not is_resting(time, beast):
                 beast['distance'] += beast['speed']
 
         # every reindeer in the lead gets 1 point

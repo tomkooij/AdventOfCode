@@ -33,8 +33,7 @@ if __name__ == '__main__':
     reindeer = parse(lines)
 
     solution = []
-    for specs in reindeer:
-        name, speed, flytime, resttime = specs
+    for name, speed, flytime, resttime  in reindeer:
         distance = race(speed, flytime, resttime, RUNTIME)
         print name, distance
         solution.append((distance, name))
