@@ -27,7 +27,6 @@ if __name__ == '__main__':
 
     firstparts = find_parts(weights, bintotal, len(weights)/3)
     print 'number of unique firstparts:', len(firstparts)
-    QE = []
 
     shortestpart = min([len(x) for x in firstparts])
 
@@ -37,8 +36,10 @@ if __name__ == '__main__':
     print 'predicted min QE: ', fast_min_QE
     #print 'firstparts: ', firstparts
 
+
     assert NUMBER_OF_BINS == 3, 'Full search only implemented for 3 bins'
     # full search of parts 2 and 3 foreach part 1
+    QE = []
     for i, part1 in enumerate(firstparts, start=1):
         if not i % 1000: print '%d firstparts searched.' % i
         rest = weights - set(part1)
