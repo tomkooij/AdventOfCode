@@ -26,30 +26,13 @@ def modular_pow(base, exponent, modulus):
 
 def count_to(ROW, COLUMN):
     """count the number of iterations from (1,1) to (ROW, COLUMN)"""
+    n = 0
 
-    n = 1
-
-    max_row, max_column = 1,1
-    row, column = 1,1
-
-    while 1:
-        #print row, column, n
-        if (row == ROW and column == COLUMN):
-            break
-
-        # go up-right
-        column += 1
-        row -= 1
-
-        if row == 0:
-            # next diagonal
-            column = 1
-            max_row += 1
-            row = max_row
-            #print "next diagnonal: max row = ", max_row
-
-        n += 1
-    return n
+    # n = 1 + 2 + 3 + ...
+    for diagonal in xrange(1, ROW+COLUMN):
+        n += diagonal
+        
+    return n - (ROW - 1)
 
 
 if __name__ == '__main__':
@@ -61,6 +44,6 @@ if __name__ == '__main__':
         k = START * modular_pow(MUL, n-1, MOD) % MOD
 
         if TESTCASE is not None:
-            assert k == TESTCASE, 'Testcase failure: (%d, %d) = %d' % (row, column, k)
+            assert k == TESTCASE, 'Testcase failure: n = %d (%d, %d) = %d' % (n, row, column, k)
 
-        print "n (%d, %d) = %d" % (row, column, k)
+        print "n = %d (%d, %d) = %d" % (n, row, column, k)
