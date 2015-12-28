@@ -31,12 +31,8 @@ def score(n, ingredients):
 
 if __name__ == '__main__':
 
-    with open(INPUTFILE, 'r') as f:
-        lines = f.readlines()
-    #ingredients = parse(lines)
+    # Testcase
     ingredients = parse(TESTCASE)
-    #print ingredients
-
     solution = []
     n = [0,0]
     for i in range(1,100):
@@ -46,3 +42,20 @@ if __name__ == '__main__':
     winner = max(solution)
     print winner
     assert winner[0] == 62842880, 'Testcase failure!'
+
+    # part A
+    with open(INPUTFILE, 'r') as f:
+        lines = f.readlines()
+    ingredients = parse(lines)
+    solution = []
+    n = [0, 0, 0, 0]
+    for i in range(0,101):
+        n[0] = i
+        for j in range(0,101-i):
+            n[1] = j
+            for k in range(0,101-(i+j)):
+                n[2] = k
+                n[3] = 100 - (i+j+k)
+                solution.append((score(n, ingredients), n[0], n[1], n[2], n[3]))
+    winner = max(solution)
+    print winner
