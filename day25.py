@@ -10,8 +10,8 @@ INPUT = [(2, 2, 21629792), (6, 6, 27995004), (2978, 3083, None)]
 
 
 def modular_pow(base, exponent, modulus):
-    """ pseudocode from: https://en.wikipedia.org/wiki/Modular_exponentiation
-        which quotes B. Schneier, Applied Cryptography as source """
+    """ pseudocode from: B. Schneier, Applied Cryptography
+        via https://en.wikipedia.org/wiki/Modular_exponentiation """
 
     if modulus == 1: return 0
     result = 1
@@ -28,10 +28,10 @@ def count_to(ROW, COLUMN):
     """count the number of iterations from (1,1) to (ROW, COLUMN)"""
     n = 0
 
-    # n = 1 + 2 + 3 + ...
-    for diagonal in xrange(1, ROW+COLUMN):
-        n += diagonal
-        
+    # n = 1 + 2 + 3 + ...  => n = k*(k+1) / 2
+    k = ROW+COLUMN-1
+    n = k * (k+1) / 2
+
     return n - (ROW - 1)
 
 
