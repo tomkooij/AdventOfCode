@@ -11,11 +11,11 @@ TESTCASE = ['Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calo
 
 def parse(lines):
 
-    ingredients = np.array([4*[0] for _ in range(len(lines))])
+    ingredients = []
 
     for idx, line in enumerate(lines):
         name, capcity, c, durability, d, flavor, f, texture, t, calories, cal = line.replace(',','').split()
-        ingredients[idx] = map(int, (c,d,f,t))
+        ingredients.append(map(int, (c,d,f,t)))
 
     return ingredients
 
