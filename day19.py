@@ -49,3 +49,9 @@ if __name__ == '__main__':
 
     if test:
         assert set(test) == set(solution), 'Testcase failure!'
+
+    # part B
+    # Cheated! #Atoms - 2*(#Rn) - 2*(#Y) - 1
+    # https://www.reddit.com/r/adventofcode/comments/3xflz8/day_19_solutions/cy4etju
+    print 'part B'
+    print sum(map(str.isupper,inputstring)) - 2*inputstring.count('Rn') - 2*inputstring.count('Y') - 1
