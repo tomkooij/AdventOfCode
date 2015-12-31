@@ -26,7 +26,6 @@ Armor = [
 
 Rings = [
     ("No ring", 0, 0, 0),
-    ("No ring", 0, 0, 0),
     ("Damage +1",   25, 1, 0),
 	("Damage +2",   50, 2, 0),
 	("Damage +3",  100, 3, 0),
@@ -56,9 +55,6 @@ if __name__ == '__main__':
     boss = set_stats(hp=12, damage=7, armor=2)
     assert player_wins(player, boss), 'Testcase failure!'
 
-    # wear 0-2 rings
-    Rings = set(list(combinations(Rings,2)))
-
     player = defaultdict(int)
     boss = defaultdict(int)
     player['hp'] = 100
@@ -69,7 +65,7 @@ if __name__ == '__main__':
     solutionA = []
     solutionB = []
 
-    for stats in product(Weapons, Armor, Rings):
+    for stats in product(Weapons, Armor, Rings, Rings):
         player['hp'] = 100
         player['cost'] = 0
         player['damage'] = 0
@@ -79,17 +75,9 @@ if __name__ == '__main__':
         boss['armor'] = boss_armor
 
         for stat in stats:
-            if len(stat) == 2:  # rings
-                player['cost'] += stat[0][1]
-                player['cost'] += stat[1][1]
-                player['damage'] += stat[0][2]
-                player['damage'] += stat[1][2]
-                player['armor'] += stat[0][3]
-                player['armor'] += stat[1][3]
-            else:
-                player['cost'] += stat[1]
-                player['damage'] += stat[2]
-                player['armor'] += stat[3]
+            player['cost'] += stat[1]
+            player['damage'] += stat[2]
+            player['armor'] += stat[3]
 
         if player_wins(player, boss):
             solutionA.append(player['cost'])
