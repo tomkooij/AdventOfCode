@@ -49,6 +49,9 @@ def player_wins(player, boss):
 def set_stats(hp=100, damage=1, armor=1):
     return {'hp':hp, 'damage':damage, 'armor':armor}
 
+def cost(s): return s[1]
+def damage(s): return s[2]
+def armor(s): return s[3]
 
 if __name__ == '__main__':
     player = set_stats(hp=8, damage=5, armor=5)
@@ -66,18 +69,13 @@ if __name__ == '__main__':
     solutionB = []
 
     for stats in product(Weapons, Armor, Rings, Rings):
+        # reset hp
         player['hp'] = 100
-        player['cost'] = 0
-        player['damage'] = 0
-        player['armor'] = 0
         boss['hp'] = boss_hp
-        boss['damage'] = boss_damage
-        boss['armor'] = boss_armor
 
-        for stat in stats:
-            player['cost'] += stat[1]
-            player['damage'] += stat[2]
-            player['armor'] += stat[3]
+        player['cost'] = sum(map(cost, stats))
+        player['damage'] = sum(map(damage, stats))
+        player['armor'] = sum(map(armor, stats))
 
         if player_wins(player, boss):
             solutionA.append(player['cost'])
