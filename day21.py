@@ -1,8 +1,7 @@
 # adventofcode.com
 # day21
 
-from itertools import combinations, product
-from collections import defaultdict
+from itertools import product
 
 #input
 boss_hp =  104
@@ -58,8 +57,8 @@ if __name__ == '__main__':
     boss = set_stats(hp=12, damage=7, armor=2)
     assert player_wins(player, boss), 'Testcase failure!'
 
-    player = defaultdict(int)
-    boss = defaultdict(int)
+    player = {}
+    boss = {}
     player['hp'] = 100
     boss['hp'] = boss_hp
     boss['damage'] = boss_damage
