@@ -52,29 +52,24 @@ def parse(line):
 
     example: parse('x AND y -> z') returns ['AND', x, y, z]
     """
-    s = line.split()
-    if len(s) == 5:
+    left, out = line.split(' -> ')
+    left = left.split()
+    if len(left) == 3:
         # AND, OR, RSHIFT, LSHIFT
-        a, op, b, arrow, out = s
-        assert arrow == '->'
-    elif len(s) == 4:
+        a, op, b = left
+    elif len(left) == 2:
         # NOT
-        op, a, arrow, out = s
-        assert arrow == '->'
+        op, a = left
         b = None
-    elif len(s) == 3:
+    else:
         # Assignment
-        a, arrow, out = s
-        assert arrow == '->'
+        a = left[0]
         b = None
         if a.isdigit():
             a = int(a)
             op = 'integer'
         else:
             op = 'COPY'
-    else:
-        print  "unknown input: ", s
-        assert False
 
     return op, a, b, out
 
@@ -90,7 +85,7 @@ signal = {}
 
 with open(INPUTFILE) as f:
     for line in f.readlines():
-        op, a, b, out = parse(line)
+        op, a, b, out = parse(line.strip('\n'))
         signal[out] = [op_to_func[op], a, b]
 
 print "result: a = ", eval('a')
