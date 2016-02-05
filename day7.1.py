@@ -45,10 +45,15 @@ def eval(key):
         return int(signal[key][1])
 
     # recursively evaluate the arguments [1],[2] then call the function in [0]
-    return signal[key][0](eval(signal[key][1]),eval(signal[key][2]))
+    return signal[key][0] ( eval(signal[key][1]), eval(signal[key][2]) )
 
 
 def parse(line):
+    """
+    parses lines into list [function, left, right, out]:
+
+    example: parse('x AND y -> z') returns ['AND', x, y, z]
+    """
     s = line.split()
     if len(s) == 5:
         # AND, OR, RSHIFT, LSHIFT
@@ -73,7 +78,7 @@ def parse(line):
         print  "unknown input: ", s
         assert False
 
-    signal[out] = [op_to_func[op], a, b]
+    return op, a, b, out
 
 op_to_func = {'AND': AND,
              'OR': OR,
@@ -87,6 +92,7 @@ signal = {}
 
 with open(INPUTFILE) as f:
     for line in f.readlines():
-        parse(line)
+        op, a, b, out = parse(line)
+        signal[out] = [op_to_func[op], a, b]
 
 print "result: a = ", eval('a')
