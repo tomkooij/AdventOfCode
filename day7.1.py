@@ -1,9 +1,7 @@
 #adventofcode.com
 #day7.1
 #
-# Algorithm: Repeatedly process the list of gates. Removing processed gates
-#  logic was added "on the fly" -->
-#     "number AND gate -> gate" is implemented, but "number OR gate -> gate" is not.
+# recursively evaluate wires.
 
 import functools
 
