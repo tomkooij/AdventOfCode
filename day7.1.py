@@ -39,11 +39,12 @@ def eval(key):
         return key
     if key.isdigit():
         return int(key)
-    if signal[key][0] == 'int':
-        return int(signal[key][1])
 
-    # recursively evaluate the arguments [1],[2] then call the function in [0]
-    return signal[key][0] ( eval(signal[key][1]), eval(signal[key][2]) )
+    func, a, b = signal[key]
+    if func == 'int':
+        return int(a)
+
+    return func ( eval(a), eval(b) )
 
 
 def parse(line):
