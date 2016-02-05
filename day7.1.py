@@ -5,78 +5,85 @@
 #  logic was added "on the fly" -->
 #     "number AND gate -> gate" is implemented, but "number OR gate -> gate" is not.
 
+import functools
+
 INPUTFILE = 'input/input7'
 #INPUTFILE = 'input/test7'
+
+# note that this decorator ignores **kwargs
+def memoize(obj):
+    cache = obj.cache = {}
+
+    @functools.wraps(obj)
+    def memoizer(*args, **kwargs):
+        if args not in cache:
+            cache[args] = obj(*args, **kwargs)
+        return cache[args]
+    return memoizer
 
 def AND(a, b): return a & b
 def OR(a, b): return a | b
 def RSHIFT(a, b): return a >> b
 def LSHIFT(a, b): return a << b
 def NOT(a, b): return ~a & 0xffff  # unsigned int!
+def COPY(a, b): return a
 
-def do(f, in_a, in_b, out):
-    try:
-        a = signal[in_a]
-    except KeyError:
-        a = int(in_a)
-    try:
-        b = signal[in_b]
-    except KeyError:
-        b = int(in_b)
+def assign(f, in_a, in_b, out):
+    signal[out] = [f, in_a, in_b]
 
-    signal[out] = f(a, b)
+computing = []
+
+#@memoize
+def eval(key):
+    if key is None:
+        return key
+    if key.isdigit():
+        return int(key)
+    if signal[key][0] == 'int':
+        return int(signal[key][1])
+
+    return signal[key][0](eval(signal[key][1]),eval(signal[key][2]))
+
+
+def parse(line):
+    s = line.split()
+    if len(s) == 5:
+        a, op, b, arrow, out = s
+        assert arrow == '->'
+        if op == 'AND':
+            f = AND
+        elif op == 'OR':
+            f = OR
+        elif op == 'RSHIFT':
+            f = RSHIFT
+        elif op == 'LSHIFT':
+            f = LSHIFT
+        else:
+            print  "unknown input len 5: ", s
+            assert False
+    elif len(s) == 4:
+        op, a, arrow, out = s
+        b = None
+        f = NOT
+        assert arrow == '->'
+    elif len(s) == 3:
+        a, arrow, out = s
+        assert arrow == '->'
+        b = None
+        if a.isdigit():
+            a = int(a)
+            f = 'int'
+        else:
+            f = COPY
+    else:
+        print  "unknown input: ", s
+        assert False
+    assign(f, a, b, out)
 
 signal = {}
 
 with open(INPUTFILE) as f:
-    lines = f.readlines()
+    for line in f.readlines():
+        parse(line)
 
-    last = len(lines)+1
-    while len(lines) > 0:
-        print "lines to go", len(lines)
-        if len(lines) == last:
-            print "fail!", lines
-            break
-        last = len(lines)
-
-        for idx,line in enumerate(lines):
-            s = line.split()
-            if s[1] == 'AND':
-                assert s[3] == '->'
-                if (s[0].isdigit()) and (s[2] in signal):
-                    lines.pop(idx)
-                    do(AND, s[0], s[2], s[4])
-                if (s[0] in signal) and (s[2] in signal):
-                    lines.pop(idx)
-                    do(AND, s[0], s[2], s[4])
-            elif s[1] == 'OR':
-                assert s[3] == '->'
-                if (s[0] in signal) and (s[2] in signal):
-                    lines.pop(idx)
-                    do(OR, s[0], s[2], s[4])
-            elif s[1] == 'RSHIFT':
-                assert s[3] == '->'
-                if (s[0] in signal):
-                    lines.pop(idx)
-                    do(RSHIFT, s[0], s[2], s[4])
-            elif s[1] == 'LSHIFT':
-                assert s[3] == '->'
-                if (s[0] in signal):
-                    lines.pop(idx)
-                    do(LSHIFT, s[0], s[2], s[4])
-            elif s[0] == 'NOT':
-                assert s[2] == '->'
-                if (s[1] in signal):
-                    lines.pop(idx)
-                    do(NOT, s[1], 0, s[3])
-            elif s[1] == '->':
-                if s[0].isdigit():
-                    signal[s[2]] = int(s[0])
-                    lines.pop(idx)
-                elif(s[0] in signal):
-                    signal[s[2]] = signal[s[0]]
-                    lines.pop(idx)
-            else:
-                print "skipping unknown input: ", s
-
-    print "result: a = ", signal['a']
+print "result: a = ", eval('a')
