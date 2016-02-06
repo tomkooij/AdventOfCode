@@ -24,27 +24,36 @@ def memoize(obj):
     return memoizer
 
 
-def AND(a, b): return a & b
-def OR(a, b): return a | b
-def RSHIFT(a, b): return a >> b
-def LSHIFT(a, b): return a << b
-def NOT(a, b): return ~a & 0xffff  # unsigned int!
-def COPY(a, b): return a
-
-
 @memoize
 def eval(key):
     """ recursively evaluate a statement from signal dict. Needs memoisation! """
+
+    def AND(a, b): return a & b
+    def OR(a, b): return a | b
+    def RSHIFT(a, b): return a >> b
+    def LSHIFT(a, b): return a << b
+    def NOT(a, b): return ~a & 0xffff  # unsigned int!
+    def COPY(a, b): return a
+
+    operator_to_function = {'AND': AND,
+                            'OR': OR,
+                            'RSHIFT': RSHIFT,
+                            'LSHIFT': LSHIFT,
+                            'NOT': NOT,
+                            'COPY': COPY,
+                            'integer': 'int'}
+
     if key is None:
         return key
-    if key.isdigit():
+    if str(key).isdigit():
         return int(key)
 
-    func, a, b = signal[key]
-    if func == 'int':
-        return int(a)
+    operator, left, right = signal[key]
 
-    return func ( eval(a), eval(b) )
+    if operator == 'integer':
+        return int(left)
+
+    return operator_to_function[operator] ( eval(left), eval(right) )
 
 
 def parse(line):
@@ -74,19 +83,12 @@ def parse(line):
 
     return op, a, b, out
 
-op_to_func = {'AND': AND,
-             'OR': OR,
-             'RSHIFT': RSHIFT,
-             'LSHIFT': LSHIFT,
-             'NOT': NOT,
-             'COPY': COPY,
-             'integer': 'int'}
 
 signal = {}
 
 with open(INPUTFILE) as f:
     for line in f.readlines():
-        op, a, b, out = parse(line.strip('\n'))
-        signal[out] = [op_to_func[op], a, b]
+        operator, left, right, out = parse(line.strip('\n'))
+        signal[out] = [operator, left, right]
 
 print "result: a = ", eval('a')
