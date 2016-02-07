@@ -40,8 +40,7 @@ def eval(key):
                             'RSHIFT': RSHIFT,
                             'LSHIFT': LSHIFT,
                             'NOT': NOT,
-                            'COPY': COPY,
-                            'integer': 'int'}
+                            'COPY': COPY}
 
     if key is None:
         return key
@@ -49,9 +48,6 @@ def eval(key):
         return int(key)
 
     operator, left, right = signal[key]
-
-    if operator == 'integer':
-        return int(left)
 
     return operator_to_function[operator] ( eval(left), eval(right) )
 
@@ -77,9 +73,7 @@ def parse(line):
         b = None
         if a.isdigit():
             a = int(a)
-            op = 'integer'
-        else:
-            op = 'COPY'
+        op = 'COPY'
 
     return op, a, b, out
 
