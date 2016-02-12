@@ -31,14 +31,10 @@ with open(INPUTFILE) as f:
         graph[_from][_to] = int(dist)
         graph[_to][_from] = int(dist)
 
-        nodes.append(_from)
-        nodes.append(_to)
-
-nodes = list(set(nodes))
 
 solution = []
 
-for route in permutations(nodes):
+for route in permutations(graph.keys()):
     d = distance(graph, route)
     #print route, d
     solution.append(d)
