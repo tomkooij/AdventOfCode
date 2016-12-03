@@ -1,5 +1,4 @@
 import re
-import numpy as np
 
 
 def check_triangle(x, y, z):
@@ -8,9 +7,8 @@ def check_triangle(x, y, z):
 
 def find_number_of_possible_triangles(triangles):
     n = 0
-    triangles = np.array(triangles)
-    for t in triangles.T:  # for each column
-        for x, y, z in zip(t[::3], t[1::3], t[2::3]):
+    for column in zip(*triangles):
+        for x, y, z in zip(column[::3], column[1::3], column[2::3]):
             if check_triangle(x, y, z):
                 n += 1
     return n
