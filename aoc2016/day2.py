@@ -1,33 +1,28 @@
+next_position = {'U': lambda x, y: (x, y+1),
+                 'L': lambda x, y: (x-1, y),
+                 'D': lambda x, y: (x, y-1),
+                 'R': lambda x, y: (x+1, y)}
 
-go = {'U': lambda x, y: (x, y+1),
-      'L': lambda x, y: (x-1, y),
-      'D': lambda x, y: (x, y-1),
-      'R': lambda x, y: (x+1, y)}
+keypad = ['123',
+          '456',
+          '789']
 
-# keypad:
-# 1 2 3
-# 4 5 6
-# 7 8 9
-#
-# (0, 0) -> 7
-# (1, 1) -> 5
-# (2, 2) -> 3
 keypad_map = {}
-coords = [(a, b) for a in range(2, -1, -1) for b in range(3)]
-for number, keypad in enumerate(coords, 1):
-        keypad_map[keypad] = number
+for x in range(3):
+    for y in range(3):
+        keypad_map[(x, y)] = keypad[2-y][x]
 
-
-x, y = 1, 1  # keypad '5'
+x, y = 1, 1
+number = keypad_map[(x, y)]
+assert number == '5'
 key = ''
 
 with open('input/input2.txt') as f:
     for line in f.readlines():
-        for cmd in line.rstrip('\n'):
-            x1, y1 = go[cmd](x, y)
+        for move in line.rstrip('\n'):
             try:
-                number = str(keypad_map[(y1, x1)])
-                x, y = x1, y1
+                number = keypad_map[next_position[move](x, y)]
+                x, y = next_position[move](x, y)
             except KeyError:
                 pass
         key += number
