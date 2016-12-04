@@ -12,8 +12,7 @@ def get_sector_id(string):
 
     # letter_count = [('a', 5), ('c', 4), ('x', 1), ('y', 1)]
     letter_count = list({(char, name.count(char)) for char in name})
-    letter_count.sort()   # sort by letter
-    letter_count.sort(key=lambda x: x[1], reverse=True)  # sort by count
+    letter_count.sort(key=lambda x: (-x[1], x[0]))  # sort by count, letter
 
     calculated_checksum = "".join([letter for letter, count in letter_count])
     if calculated_checksum[:5] == checksum:
