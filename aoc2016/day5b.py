@@ -13,16 +13,13 @@ def find_next(secret, startidx):
 
 n = 0
 id = 16*['_']
-done = set()
 
 while True:
     n, pos, char = find_next(SECRET, n+1)
-
     pos = int(pos, 16)
 
-    if pos in done:
+    if id[pos] != '_':
         continue
-    done.add(pos)
 
     id[pos] = char
     print('found: ', n, char, pos, ''.join(id))
