@@ -1,9 +1,7 @@
-# adventofcode.com
-# day 4.1
-
 import hashlib
 
 SECRET = 'ojvtpuvg'
+
 
 def find_next(secret, startidx):
     for i in range(startidx, 99999999):
@@ -14,22 +12,22 @@ def find_next(secret, startidx):
             return i, m.hexdigest()[5], m.hexdigest()[6]
 
 n = 0
-id = 10*['_']
+id = 16*['_']
 done = set()
 
 while True:
     n, pos, char = find_next(SECRET, n+1)
-    try:
-        pos = int(pos)
-    except:
-        continue
+
+    pos = int(pos, 16)
+
     if pos in done:
         continue
     done.add(pos)
 
     id[pos] = char
-    print('found: ', n, char, pos, id)
-    if len(done) >= 10:
+    print('found: ', n, char, pos, ''.join(id))
+
+    if '_' not in id[:8]:
         break
 
 print(''.join(id[:8]))

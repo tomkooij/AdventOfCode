@@ -1,13 +1,10 @@
-# adventofcode.com
-# day 4.1
-
 import hashlib
 
 SECRET = 'ojvtpuvg'
-#SECRET = 'abc'
+
 
 def find_next(secret, startidx):
-    for i in range(startidx,999999999):
+    for i in range(startidx, 999999999):
 
         item = secret+str(i)
 
