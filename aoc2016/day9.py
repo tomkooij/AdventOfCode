@@ -2,23 +2,20 @@ partB = False
 
 def decompress(s):
 
-    idx = s.find('(')
-    if idx == -1:
+    if '(' not in s:
         return len(s)
 
-    idx_endmarker = s.find(')', idx)
-    marker = s[idx+1:idx_endmarker]
+    start, marker = s.split('(', 1)
+    marker, rest = marker.split(')', 1)
     number_of_chars, n = map(int, marker.split('x'))
 
-    start = idx_endmarker+1
-    endpart = idx_endmarker+number_of_chars+1
-    nextpart = s[start: endpart]
-    rest = s[endpart:]
+    nextpart = rest[:number_of_chars]
+    rest = rest[number_of_chars:]
 
     if partB:
-        return len(s[:idx]) + n*decompress(nextpart) + decompress(rest)
+        return len(start) + n*decompress(nextpart) + decompress(rest)
     else:
-        return len(s[:idx]) + n*len(nextpart) + decompress(rest)
+        return len(start) + n*len(nextpart) + decompress(rest)
 
 
 with open('input/input9.txt') as f:
