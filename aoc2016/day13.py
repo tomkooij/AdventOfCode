@@ -1,7 +1,7 @@
 
-MAGIC = 10
+MAGIC = 1350
 START = (1, 1)
-GOAL = (4, 7)
+GOAL = (39, 31)
 
 WIDTH, HEIGHT = 100, 100
 
@@ -27,19 +27,20 @@ def generate_moves(moves, pos):
     return [(moves+1, newpos) for newpos in new_positions if is_valid(*newpos)]
 
 
-def bfs(start, goal):
+def bfs(start, goal, partB=False):
     visited, queue = set(), [(0, start)]
     while queue:
-        #print ('queue', queue)
         moves, pos = queue.pop(0)
-        #print ('poped: ', moves, pos)
         if pos not in visited:
             visited.add(pos)
             if pos == goal:
                 return moves
+            if partB and moves == 50:
+                return visited
             else:
                 queue.extend(generate_moves(moves, pos))
 
 
 maze = [[is_wall_or_space(r, c) for c in range(WIDTH)] for r in range(HEIGHT)]
-print(bfs(START, GOAL))
+print('part A', bfs(START, GOAL))
+print('part B', len(bfs(START, GOAL, partB=True)))
