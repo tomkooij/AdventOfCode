@@ -20,10 +20,9 @@ def find_first_group(s, group):
 
 def find_quint(hashes, c):
     quint = 5*c
-    for dist, h in enumerate(hashes, 1):
+    for h in hashes:
         if quint in h:
-            #print('found', quint, h, end='')
-            return dist
+            return True
 
 
 def md5_hash(salt, i):
@@ -33,8 +32,17 @@ def md5_hash(salt, i):
     return m.hexdigest()
 
 
-def find_otp(salt):
-    """ search in a rotating queue of 1000 hashes """
+def md5_hash_2016(salt, i):
+    item = salt+str(i)
+    for _ in range(2017):
+        m = hashlib.md5()
+        m.update(item.encode())
+        item = m.hexdigest()
+    return item
+
+
+def find_otp(salt, md5_hash=md5_hash):
+    """ search in a sliding window of 1000 hashes """
 
     queue = deque([md5_hash(salt, x) for x in range(1001)])
     triples = [3*hex_str(x) for x in range(16)]
@@ -54,3 +62,4 @@ def find_otp(salt):
 
 
 print(find_otp(SALT))
+print(find_otp(SALT, md5_hash=md5_hash_2016))
