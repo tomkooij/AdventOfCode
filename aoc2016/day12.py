@@ -3,10 +3,7 @@
 from collections import defaultdict
 
 
-regs = defaultdict(int)
-regs['ip'] = 0
-
-def evaluate(instruction):
+def evaluate(instruction, regs):
     opcode, *rest = instruction
 
     if opcode == 'cpy':
@@ -40,12 +37,19 @@ def evaluate(instruction):
         assert False, 'unknown instruction.'
 
 
+def run(*args, **kwargs):
+    regs = defaultdict(int)
+    for key, value in kwargs.items():
+        regs[key] = value
+
+    while regs['ip'] < len(instructions):
+        evaluate(instructions[regs['ip']], regs)
+
+    return regs['a']
+
 
 with open('input\input12.txt') as f:
     instructions = [line.rstrip('\n').split() for line in f.readlines()]
-    # regs['c'] = 1   # part B
 
-    while regs['ip'] < len(instructions):
-        evaluate(instructions[regs['ip']])
-
-    print ('ip: %d a: %d b: %d' % (regs['ip'], regs['a'], regs['b']))
+print('part A: ', run())
+print('part B: ', run(c=1))
