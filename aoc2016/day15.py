@@ -1,7 +1,5 @@
 import numpy as np
 
-LENGTH = int(1e6)
-
 
 def parse(line):
     """Disc #1 has 13 positions; at time=0, it is at position 1."""
@@ -14,23 +12,31 @@ def is_open(t, number_of_slots, start_position):
     return not (t + start_position) % number_of_slots
 
 
-def solve(dics, length):
+def solve(dics):
     """ very (very) naive brute force search """
+
+    length = 1000  # search 1000 columns at a time
 
     matrix = np.zeros((len(discs), length))
 
-    for idx, disc in enumerate(discs):
-        n_slots, start = disc
-        matrix[idx] = [is_open(t + idx, n_slots, start) for t in range(length)]
+    t_offset = 0
 
-    index_first_all_true_column = np.all(matrix, axis=0).argmax()
+    while True:
+        for idx, disc in enumerate(discs):
+            n_slots, start = disc
+            matrix[idx] = [is_open(t + idx + t_offset, n_slots, start) for t in range(length)]
 
-    return index_first_all_true_column - 1
+        index_first_all_true_column = np.all(matrix, axis=0).argmax()
+
+        if index_first_all_true_column > 0 or np.all(matrix[:, 0]):
+            return t_offset + index_first_all_true_column - 1
+
+        t_offset += length
 
 
 with open('input\input15.txt') as f:
     discs = [parse(line.rstrip('\n')) for line in f.readlines()]
 
-print('part A: ', solve(discs, LENGTH))
+print('part A: ', solve(discs))
 discs.append((11, 0))
-print('part B: ', solve(discs, 11*LENGTH))
+print('part B: ', solve(discs))
