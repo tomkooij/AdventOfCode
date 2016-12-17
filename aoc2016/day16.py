@@ -2,33 +2,20 @@ def reverse_order(s):
     """reverse a string"""
     return s[::-1]
 
-
+replace = {'0': '1', '1': '0'}
 def replace_0_1(s):
     """ '00110' --> '11001' """
-    result = []
-    for char in s:
-        if int(char):
-            result.append('0')
-        else:
-            result.append('1')
-    return ''.join(result)
+    return ''.join([replace[c] for c in s])
 
 
 def dragon_curve(a):
-    b = a
-    return a + '0' + replace_0_1(reverse_order(b))
+    return a + '0' + replace_0_1(reverse_order(a))
 
 
+mapping = {'11': '1', '00': '1', '10': '0', '01': '0'}
 def checksum(s):
     def checksum_step(s):
-        r = []
-        mapping = {'11': '1',
-                   '00': '1',
-                   '10': '0',
-                   '01': '0'}
-        for idx in range(0, len(s), 2):
-            r.append(mapping[s[idx:idx+2]])
-        return ''.join(r)
+        return ''.join([mapping[s[idx:idx+2]] for idx in range(0, len(s), 2)])
 
     while True:
         s = checksum_step(s)
@@ -60,4 +47,4 @@ def test():
 
 test()
 print('part A: ', solve('11100010111110100', 272))
-print('part b: ', solve('11100010111110100', 35651584))
+print('part B: ', solve('11100010111110100', 35651584))
