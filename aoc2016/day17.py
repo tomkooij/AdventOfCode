@@ -1,3 +1,4 @@
+from collections import deque
 import hashlib
 
 MAGIC = 'udskfozm'
@@ -20,7 +21,7 @@ def can_move(path, r, c):
 
 
 def is_valid(path, r, c):
-    return r >= 0 and c >= 0 and can_move(path, r, c)
+    return r >= 0 and r < 4 and c >= 0 and c < 4 and can_move(path, r, c)
 
 
 def generate_moves(path, pos):
@@ -35,14 +36,17 @@ def generate_moves(path, pos):
 
 
 def bfs(start, goal):
-    queue = [('', start)]
-    while True:
-        # print (queue)
-        path, pos = queue.pop(0)
+    paths = []
+    queue = deque([('', start)])
+    while queue:
+        #print (queue)
+        path, pos = queue.popleft()
         if pos == goal:
-            return path
+            paths.append(path)
         else:
             queue.extend(generate_moves(path, pos))
+    return paths
 
-
-print('part A', bfs((0, 0), (3, 3)))
+solution = bfs((0, 0), (3, 3))
+print('part A', solution[0])
+print('part B', len(solution[-1]))
