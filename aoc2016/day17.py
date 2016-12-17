@@ -1,38 +1,30 @@
 from collections import deque
-import hashlib
+from hashlib import md5
 
 MAGIC = 'udskfozm'
 
 
 def md5_hash(s):
-    m = hashlib.md5()
-    m.update(s.encode())
-    return m.hexdigest()
+    return md5(s.encode()).hexdigest()
 
 
-def can_move(path, r, c):
-    hash_input = MAGIC+path[:-1]
-    direction = path[-1]
-    hash_ = md5_hash(hash_input)
-
-    for idx, s in enumerate('UDLR'):
-        if direction == s:
-            return hash_[idx] in 'bcdef'
+move_to_index = {'U': 0, 'D': 1, 'L': 2, 'R': 3}
+def can_move(path, move):
+    return md5_hash(MAGIC+path)[move_to_index[move]] in 'bcdef'
 
 
-def is_valid(path, r, c):
-    return r >= 0 and r < 4 and c >= 0 and c < 4 and can_move(path, r, c)
+def is_valid(r, c):
+    return r >= 0 and r < 4 and c >= 0 and c < 4
 
 
-def generate_moves(path, pos):
-    r, c = pos
+def generate_moves(path, r, c):
     new_positions = [('D', (r+1, c)),
                      ('U', (r-1, c)),
                      ('R', (r, c+1)),
                      ('L', (r, c-1))]
 
     return [(path+move, newpos) for move, newpos in new_positions if
-                                    is_valid(path+move, *newpos)]
+                            is_valid(*newpos) and can_move(path, move)]
 
 
 def bfs(start, goal):
@@ -44,7 +36,7 @@ def bfs(start, goal):
         if pos == goal:
             paths.append(path)
         else:
-            queue.extend(generate_moves(path, pos))
+            queue.extend(generate_moves(path, *pos))
     return paths
 
 solution = bfs((0, 0), (3, 3))
