@@ -12,33 +12,35 @@ def take_left(elfs):
 
 def solve_A(elfs):
     while len(elfs) > 1:
-        #print(elfs)
         elfs = take_left(elfs)
 
     return elfs[0]
 
 
 def solve_B(elfs):
+    """
+    Remove middle item of list of elfs, rotate 1 step, repeat.
+    deque -> O(1) pop and insert
+    """
+
     middle = len(elfs) // 2
     left, right = deque(elfs[:middle]), deque(elfs[middle:])
-    len_left = len(left)
-    len_right = len(right)
+
     while True:
         # remove middle item
         if len(left) > len(right):
-            last_elf = left.pop()
+            left.pop()
         else:
-            last_elf = right.popleft()
-        #print('removed middle', left, right)
+            right.popleft()
 
-        len_left = len(left)
-        len_right = len(right)
-        if len_left == 1 and len_right == 0:
+        # if right half is empty --> finished
+        if not right:
             return left.pop()
+
         # rotate
         left.append(right.popleft())
         right.append(left.popleft())
-        #print('after rotate', left, right)
+
 
 assert solve_A(range(1, 6)) == 3
 assert solve_A([1, 2]) == 1
