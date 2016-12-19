@@ -2,11 +2,9 @@ from collections import deque
 
 
 def take_left(elfs):
-    x = []
-    for idx in range(0, len(elfs), 2):
-        x.append(elfs[idx])
+    x = elfs[::2]
     if len(elfs) % 2:
-        x.pop(0)
+        return x[1:]
     return x
 
 
@@ -42,11 +40,11 @@ def solve_B(elfs):
         right.append(left.popleft())
 
 
-assert solve_A(range(1, 6)) == 3
+assert solve_A(list(range(1, 6))) == 3
 assert solve_A([1, 2]) == 1
 assert solve_B(list(range(1, 6))) == 2
 
 INPUT = 3017957
 
-print(solve_A(range(1, INPUT+1)))
+print(solve_A(list(range(1, INPUT+1))))
 print(solve_B(list(range(1, INPUT+1))))
