@@ -1,19 +1,6 @@
-"""
-F4 .  .  .  .  .
-F3 .  .  .  LG .
-F2 .  HG .  .  .
-F1 E  .  HM .  LM
-"""
+
 from itertools import combinations
 from copy import deepcopy
-
-# store state as list of gen-chip pairs.
-initial_state = (0, [(1, 0), (2, 0)])  # (elevator, list of pairs)
-goal = (3, [(3, 3), (3, 3)])
-
-# input
-initial_state = (0, [(0, 1), (0, 0), (0, 1), (0, 0), (0, 0)])
-goal = (3, [(3, 3), (3, 3), (3, 3), (3, 3), (3, 3)])
 
 
 def print_state(elevator, items):
@@ -51,6 +38,7 @@ def move(state, pair, item, move):
         new_state[pair] = p[0], p[1]+move
     return new_state
 
+
 def generate_moves(moves, floor, pairs):
     items = items_on_floor(floor, pairs)
     new_pos = []
@@ -71,6 +59,7 @@ def generate_moves(moves, floor, pairs):
 
     #print('new_pos', new_pos)
     return [(moves+1, new_state) for new_state in new_pos]
+
 
 def is_allowed(state):
     #print_state(*state)
@@ -100,7 +89,7 @@ def bfs():
         #print ('queue', queue)
         moves, state = queue.pop(0)
         if moves > depth:
-            print('reached depth = ', depth)
+            print('depth = ', depth)
             depth = moves
 
         #print ('poped: ', moves, state)
@@ -115,4 +104,27 @@ def bfs():
             else:
                 queue.extend(generate_moves(moves, *state))
 
-print(bfs())
+# test case
+"""
+F4 .  .  .  .  .
+F3 .  .  .  LG .
+F2 .  HG .  .  .
+F1 E  .  HM .  LM
+"""
+# store state as list of gen-chip pairs.
+initial_state = (0, [(1, 0), (2, 0)])  # (elevator, list of pairs)
+goal = (3, [(3, 3), (3, 3)])
+assert bfs() == 11
+
+# input part A
+initial_state = (0, [(0, 1), (0, 0), (0, 1), (0, 0), (0, 0)])
+goal = (3, [(3, 3), (3, 3), (3, 3), (3, 3), (3, 3)])
+print('part A: ', bfs())
+
+# input part B
+_, pairs = initial_state
+pairs.extend([(0, 0), (0, 0)])
+
+initial_state = (0, pairs)
+goal = (3, 7*[(3, 3)])
+print('part B: ', bfs())
