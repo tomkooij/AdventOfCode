@@ -1,4 +1,4 @@
-
+from collections import deque
 from itertools import combinations
 from copy import deepcopy
 
@@ -70,12 +70,8 @@ def is_allowed(state):
         gen, mic = pair
         if gen != mic:
             unpaired_microchip_on_floor[mic] = True
-    for pair in pairs:
-        gen, mic = pair
         generator_on_floor[gen] = True
 
-    #print('unpaired: ', unpaired_microchip_on_floor)
-    #print('gen: ', generator_on_floor)
     for i in range(4):
         if unpaired_microchip_on_floor[i] and generator_on_floor[i]:
             return False
@@ -84,18 +80,18 @@ def is_allowed(state):
 
 def bfs():
     depth = 0
-    visited, queue = set(), [(0, initial_state)]
+    visited, queue = set(), deque([(0, initial_state)])
     while queue:
-        #print ('queue', queue)
-        moves, state = queue.pop(0)
-        if moves > depth:
-            print('depth = ', depth)
-            depth = moves
-
+        moves, state = queue.popleft()
         #print ('poped: ', moves, state)
         #print_state(*state)
         if not is_allowed(state):
             continue
+
+        if moves > depth:
+            print('depth = ', depth)
+            depth = moves
+
         hash_state = str(state[0])+str(sorted(state[1]))
         if hash_state not in visited:
             visited.add(hash_state)
