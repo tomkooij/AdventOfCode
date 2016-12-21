@@ -19,7 +19,12 @@ def rotate(l, n):
 
 def rotate_pos(l, a):
     """
-    rotate based on position of letter X means that the whole string should be rotated to the right based on the index of letter X (counting from 0) as determined before this instruction does any rotations. Once the index is determined, rotate the string to the right one time, plus a number of times equal to that index, plus one additional time if the index was at least 4.
+    rotate based on position of letter X means that the whole string should be
+    rotated to the right based on the index of letter X (counting from 0) as
+    determined before this instruction does any rotations. Once the index is
+    determined, rotate the string to the right one time, plus a number of
+    times equal to that index, plus one additional time if the index was at
+    least 4.
     """
     n  = l.index(a) + 1
     if n >= 5:
@@ -38,13 +43,16 @@ def reversed_rotate_pos(l, a):
 
 def reverse_pos(l, x, y):
     """
-    reverse positions X through Y means that the span of letters at indexes X through Y (including the letters at X and Y) should be reversed in order.
+    reverse positions X through Y means that the span of letters at indexes X
+    through Y (including the letters at X and Y) should be reversed in order.
     """
     return l[:x] + list(reversed(l[x:y+1])) + l[y+1:]
 
 def move_pos(l, x, y):
     """
-    move position X to position Y means that the letter which is at index X should be removed from the string, then inserted such that it ends up at index Y.
+    move position X to position Y means that the letter which is at index X
+    should be removed from the string, then inserted such that it ends up at
+    index Y.
     """
     letter = l.pop(x)
     l.insert(y, letter)
