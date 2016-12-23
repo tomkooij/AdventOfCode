@@ -10,7 +10,7 @@ def int_or_reg(register, regs):
 
 def evaluate(instruction, regs):
     opcode, *rest = instruction
-    print('evaluate ', instruction)
+    #print('evaluate ', instruction)
     if opcode == 'cpy':
         register = rest[1]
         value = rest[0]
@@ -78,8 +78,10 @@ def run(*args, **kwargs):
     return regs['a']
 
 
-with open('input\input23-test.txt') as f:
+with open('input\input23.txt') as f:
     instructions = [line.rstrip('\n').split() for line in f.readlines()]
+    print('part A: ', run(a=7))
 
-print('part A: ', run())
-#print('part B: ', run(c=1))
+with open('input\input23.txt') as f:
+    instructions = [line.rstrip('\n').split() for line in f.readlines()]
+    #print('part B: ', run(a=12))
