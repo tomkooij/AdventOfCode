@@ -18,13 +18,10 @@ def solve(dics):
     length = 1000  # search 1000 columns at a time
 
     matrix = np.zeros((len(discs), length))
-
     t_offset = 0
-
     while True:
         for idx, disc in enumerate(discs):
-            n_slots, start = disc
-            matrix[idx] = [is_open(t + idx + t_offset, n_slots, start) for t in range(length)]
+            matrix[idx] = [is_open(t + idx + t_offset, *disc) for t in range(length)]
 
         index_first_all_true_column = np.all(matrix, axis=0).argmax()
 
