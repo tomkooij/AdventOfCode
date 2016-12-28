@@ -45,21 +45,13 @@ for j in range(n):
         dist[i][j] = bfs(locations[i], locations[j])
         dist[j][i] = dist[i][j]
 
-min_d = 10000
+min_d_A, min_d_B = 10000, 10000
 for p in permutations(range(n)):
     d, start = 0, 0
     for end in p:
         d += dist[start][end]
         start = end
-    min_d = min(min_d, d)
-print('part A: ', min_d)
-
-min_d = 10000
-for p in permutations(range(n)):
-    d, start = 0, 0
-    for end in p:
-        d += dist[start][end]
-        start = end
-    d += dist[start][0]
-    min_d = min(min_d, d)
-print('part B: ', min_d)
+    min_d_A = min(min_d_A, d)
+    min_d_B = min(min_d_B, d+dist[start][0])
+print('part A: ', min_d_A)
+print('part B: ', min_d_B)
