@@ -1,0 +1,26 @@
+cpy a b
+dec b
+cpy a d
+cpy 0 a  // lines 5-10 hand optimised: a := a + b * d
+mul b d        # cpy b c
+add d a        # inc a
+cpy 0 c        # dec c
+cpy 0 d        # jnz c -2
+jnz 0 0  nop   # dec d
+jnz 0 0  nop   # jnz d -5
+dec b
+cpy b c
+cpy c d
+dec d
+inc c
+jnz d -2
+tgl c
+cpy -16 c
+jnz 1 c
+cpy 70 c
+jnz 87 d
+inc a
+inc d
+jnz d -2
+inc c
+jnz c -5

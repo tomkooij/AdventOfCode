@@ -3,7 +3,7 @@
 from collections import defaultdict
 
 
-def run(**kwargs):
+def run(instructions, **kwargs):
 
     def int_or_reg(register):
         try:
@@ -23,8 +23,8 @@ def run(**kwargs):
             opcode = 'jnz'
         return [opcode, *rest]
 
-    assert toggle(['tgl', 'a']) == ['inc', 'a']
-    assert toggle(['cpy',  '1',  'a']) == ['jnz', '1', 'a']
+    #assert toggle(['tgl', 'a']) == ['inc', 'a']
+    #assert toggle(['cpy',  '1',  'a']) == ['jnz', '1', 'a']
 
     regs = defaultdict(int)
     output = []
@@ -35,56 +35,51 @@ def run(**kwargs):
     while regs['ip'] < len(instructions):
 
         opcode, *rest = instructions[regs['ip']]
-        #print('evaluate: ', opcode, rest)
+        #print('evaluate: ', regs['ip'], opcode, rest)
         if opcode == 'tgl':
             idx = int_or_reg(rest[0])
-            print('toggling ', idx, rest)
             try:
                 instructions[regs['ip']+idx] =\
                                 toggle(instructions[regs['ip']+idx])
             except IndexError:
-                print('no such index for toggle', idx)
-            regs['ip'] += 1
+                pass
         elif opcode == 'cpy':
             register = rest[1]
             value = rest[0]
             regs[register] = int_or_reg(value)
-            regs['ip'] += 1
         elif opcode == 'inc':
             register = rest[0]
             regs[register] += 1
-            regs['ip'] += 1
         elif opcode == 'dec':
             register = rest[0]
             regs[register] -= 1
-            regs['ip'] += 1
         elif opcode == 'jnz':
             register = rest[0]
             offset = rest[1]
             zero = int_or_reg(register)
             if zero:
-                regs['ip'] += int_or_reg(offset)
-            else:
-                regs['ip'] += 1
-
+                regs['ip'] += int_or_reg(offset) - 1
+        elif opcode == 'add':
+            register = rest[1]
+            value = rest[0]
+            regs[register] += int_or_reg(value)
+        elif opcode == 'mul':
+            register = rest[1]
+            value = rest[0]
+            regs[register] *= int_or_reg(value)
         else:
             assert False, 'unknown instruction.'
+
+        regs['ip'] += 1
 
     return regs['a']
 
 
 with open('input\input23.txt') as f:
     instructions = [line.rstrip('\n').split() for line in f.readlines()]
-    print('part A: ', run(a=7))
+    print('part A: ', run(instructions, a=7))
 
-"""
-part B:  479007690
 
-real    215m13.299s
-user    215m19.859s
-sys     0m1.318s
-"""
-with open('input\input23.txt') as f:
+with open('input\input23-optimised.txt') as f:
     instructions = [line.rstrip('\n').split() for line in f.readlines()]
-    print('this will take a while...')
-    print('part B: ', run(a=12))
+    print('part B: ', run(instructions, a=12))
