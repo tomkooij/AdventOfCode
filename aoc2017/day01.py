@@ -16,7 +16,8 @@ with open('input/input01.txt') as f:
     print('part b:', y)
 
 
-# code golf
+# code golf. disregarding length of filename and keeping spaces/formatting 
 a = open("input\input01.txt").read()
+h = len(a) // 2
 print(sum([int(i) for i,j in zip(a,a[1:]+a[0]) if i == j]),
-      sum([int(i) for i,j in zip(a,a[len(a)//2:]+a[:len(a)//2]) if i==j]))
+      sum([int(i) for i,j in zip(a,a[h:]+a[:h]) if i == j]))
