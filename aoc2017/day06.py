@@ -15,13 +15,11 @@ def redistribute(lst):
             break
         states.add(str(lst))
 
-    return len(states)+1, lst
+    return len(states)+1
 
 
 with open('input\input06.txt') as f:
     l = list(map(int, f.read().split()))
-    n, last_state = redistribute(l)
-    print('part a:', n)
-    n, _ = redistribute(last_state)
-    print('part b:', n-1)
+    print('part a:', redistribute(l))
+    print('part b:', redistribute(l)-1)
     
