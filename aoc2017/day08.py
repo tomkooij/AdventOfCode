@@ -12,9 +12,7 @@ def parse(row):
     """parse a row, return a function and a condition to eval()"""
 
     opreg, op, opval, _if, condreg, condop, condval = row.split() 
-    assert _if == 'if'
-
-    inst = {}
+ 
     val = int(opval)
     if op == 'dec':
         val *= -1
