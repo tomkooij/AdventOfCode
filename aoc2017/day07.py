@@ -42,8 +42,7 @@ with open('input\input07.txt') as f:
     weights, leafs = create_tree(rows)
     leafs_set = set()
     for key in leafs:
-        for leaf in leafs[key]:
-            leafs_set.add(leaf)
+        leafs_set.update(leafs[key])
     difference = set(weights) - leafs_set
     trunk = difference.pop()
     print('part a', trunk)
