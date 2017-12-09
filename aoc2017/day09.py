@@ -1,10 +1,9 @@
 from collections import deque
 
 
-def remove_garbage(s, count_garbage=False):
+def remove_garbage(s, yield_garbage=False):
     queue = deque(s)
     garbage = False
-    chars_in_garbage = 0
     while queue:
         char = queue.popleft()
         #print('popped:', char)
@@ -15,17 +14,16 @@ def remove_garbage(s, count_garbage=False):
             garbage = False
             continue
         if garbage:
-            chars_in_garbage += 1
+            if yield_garbage:
+                yield char
             continue
         if char == '<':
             garbage = True
             continue
         #print('yield: ', char)
-        if not count_garbage:
+        if not yield_garbage:
             yield char
-    if count_garbage:
-        yield chars_in_garbage
-           
+              
 
 def solve(s):
     score = 1
@@ -42,4 +40,4 @@ def solve(s):
 with open('input\input09.txt') as f:
     input = f.readline()
     print('part a:', solve(input))
-    print('part b:', next(remove_garbage(input, count_garbage=True)))
+    print('part b:', len(list(remove_garbage(input, yield_garbage=True))))
