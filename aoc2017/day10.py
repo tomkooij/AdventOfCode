@@ -8,19 +8,22 @@ def reverse(l, start, inc):
     replace part of list with its reverse
     from index start to start+inc
     
-    stupid lazy (as in programmer being lazy) implementation  
+    stupid lazy (as in programmer being lazy) implementation:
+     First rotate the element with index start to index 0
+     Select, reverse, replace
+     Rotate the list back to its previous state
     """
     d = deque(l)
-    d.rotate(-start)  # prevent wrapping, rotate start to index 0
-    
+    d.rotate(-start)
+
     l = list(d)
-    x = l[:]
-    x = x[:inc]   # select
+    x = l[:inc]   # select
     x.reverse()   # reverse
     l[:inc] = x  # replace
-    
+
     d = deque(l)
     d.rotate(start)
+
     return list(d)
  
 
