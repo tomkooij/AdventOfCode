@@ -2,24 +2,23 @@ from collections import defaultdict
 
 
 def create_tree(rows):
-    weights = defaultdict(int)
+    """
+    weights: dict of weights for each part
+    leafs: dict with a list of leafs for each part
+    """
+    weights = {}
     leafs = defaultdict(list)
     for row in rows:
         base, weight, *rest = row
         weights[base] = int(weight[1:-1])
-        if len(rest):
-            assert rest[0] == '->'
-            for item in rest[1:]:
-                leafs[base].append(item.strip(','))
+        for item in rest[1:]:
+            leafs[base].append(item.strip(','))
     return weights, leafs
 
 
-def calc_weight(part):
-    
-    if not len(leafs[part]):
-        return weights[part]
-    
-    return weights[part] + sum([calc_weight(i) for i in leafs[part]])
+def calc_weight(base):
+    """recursively calculate weights of sub-tree including its base"""
+    return weights[base] + sum([calc_weight(i) for i in leafs[base]])
 
 
 def find_imbalance(weights, leafs, base):
@@ -30,8 +29,12 @@ def find_imbalance(weights, leafs, base):
         if len(set(w)) == 1:
             #print('found!', base, delta)
             break
-        i = w.index(max(w))
         delta = max(w) - min(w)
+        # find the sub-tree with the odd weight:
+        if delta > 0:
+            i = w.index(max(w))
+        else:
+            i = w.index(min(w))
         base = leafs[base][i]
         
     return weights[base]-delta
