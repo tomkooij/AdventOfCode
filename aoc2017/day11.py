@@ -11,7 +11,7 @@ def cube_distance(x, y):
     hexagons with flat tops
     
     x points 30degrees up (0,0)-(1,0)-(2,0)
-    y points up (0,0)-(1,0)-(2,0)
+    y points up (0,0)-(0,1)-(0,2)
     
     redundant axis z:
     z point 30degrees down (0,0)-(1,-1)-(2,-2)
