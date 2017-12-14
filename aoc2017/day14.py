@@ -23,18 +23,18 @@ def create_maze(input):
     return maze
 
 
-def bfs_trace_group(maze, r, c):
+def dfs_trace_group(maze, r, c):
     """
     Return all elements of group that contains (r, c)
-    
-    Just a BFS maze solver.
-    
+
+    Just a DFS maze solver.:
+
     based on maze solver from 2016 day 13
     """
     def is_valid(r, c):
         if r >= 0 and c >= 0 and r < 128 and c < 128:
             return maze[r][c] == '#'
-        
+
     def generate_moves(pos):
         r, c = pos
         new_positions = [(r+1, c), (r-1, c), (r, c+1), (r, c-1)]
@@ -42,28 +42,26 @@ def bfs_trace_group(maze, r, c):
 
     visited, queue = set(), [(r, c)]
     while queue:
-        pos = queue.pop(0)
+        pos = queue.pop()
         if pos not in visited:
             visited.add(pos)
             queue.extend(generate_moves(pos))
     return visited
-  
+
 
 def solve(maze):
     """find all # and all groups"""
     visited = set()
-    n_groups, n_wall = 0,0
+    n_groups, n_wall = 0, 0
     for r in range(128):
         for c in range(128):
-            if maze[r][c] == '.':
-                continue
-            n_wall += 1
-            if (r,c) in visited:
-                continue
-            group = bfs_trace_group(maze, r, c)
-            visited.update(group)
-            n_groups += 1
-    return n_groups, n_wall 
+            if maze[r][c] == '#':
+                n_wall += 1
+                if (r, c) not in visited:
+                    group = dfs_trace_group(maze, r, c)
+                    visited.update(group)
+                    n_groups += 1
+    return n_groups, n_wall
 
 
 input = 'stpzcrnm'
