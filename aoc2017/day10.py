@@ -47,7 +47,7 @@ def xor_list(l):
 
 def create_hash(x):
     """xor each part of 16 numbers and convert to hex string"""
-    return ''.join(["{0:x}".format(xor_list(x[i:i+16])) 
+    return ''.join(["{0:02x}".format(xor_list(x[i:i+16]))
                    for i in list(range(0, len(x), 16))])
 
 
