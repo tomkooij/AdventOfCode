@@ -27,7 +27,7 @@ def reverse(l, start, inc):
     return list(d)
  
 
-def knot_hash(input, rounds=1, n=256):  
+def knot_hash_rounds(input, rounds=1, n=256):  
     skip = 0
     index = 0
     x = list(range(n))
@@ -51,16 +51,17 @@ def create_hash(x):
                    for i in list(range(0, len(x), 16))])
 
 
-def solve_part_b(input):
-    l = [ord(x) for x in input]
+def knot_hash(s):
+    l = [ord(x) for x in s]
     l += [17, 31, 73, 47, 23]
-    x = knot_hash(l, rounds=64)
+    x = knot_hash_rounds(l, rounds=64)
     return create_hash(x)
 
 
-with open('input\input10.txt') as f:
-    input_str = f.read()
-    input_list = map(int, input_str.split(','))
-    x = knot_hash(input_list)
-    print('part a: ', x[0]*x[1])
-    print('part b: ', solve_part_b(input_str))
+if __name__ == '__main__':
+    with open('input\input10.txt') as f:
+        input_str = f.read()
+        input_list = map(int, input_str.split(','))
+        x = knot_hash_rounds(input_list)
+        print('part a: ', x[0]*x[1])
+        print('part b: ', knot_hash(input_str))
