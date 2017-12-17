@@ -1,7 +1,7 @@
 from collections import deque
         
 
-def solve(start_position='abcdefghijklmnop', N=1):
+def solve(instructions, start_position='abcdefghijklmnop', N=1):
     q = deque(start_position)
     stack = [start_position]
 
@@ -32,5 +32,5 @@ def solve(start_position='abcdefghijklmnop', N=1):
 
 with open('input\input16.txt') as f:
     instructions = f.read().split(',')
-    print('part a:',solve(N=1))
-    print('part b:',solve(N=int(1e9)))
+    print('part a:',solve(instructions, N=1))
+    print('part b:',solve(instructions, N=int(1e9)))
